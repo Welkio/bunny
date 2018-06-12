@@ -53,13 +53,17 @@ class Client extends AbstractClient
     public function __destruct()
     {
         if ($this->isConnected()) {
-            $this->disconnect()->done(function () {
-                $this->stop();
-            });
+            try {
+                $this->disconnect()->done(function () {
+                    $this->stop();
+                });
 
-            // has to re-check if connected, because disconnect() can set connection state immediately
-            if ($this->isConnected()) {
-                $this->run();
+                // has to re-check if connected, because disconnect() can set connection state immediately
+                if ($this->isConnected()) {
+                    $this->run();
+                }
+            } catch (\Exception $e) {
+
             }
         }
     }

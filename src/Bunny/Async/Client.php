@@ -4,6 +4,7 @@ namespace Bunny\Async;
 use Bunny\AbstractClient;
 use Bunny\ClientStateEnum;
 use Bunny\Exception\ClientException;
+use Bunny\Exception\ConnectionCloseException;
 use Bunny\Protocol\HeartbeatFrame;
 use Bunny\Protocol\MethodConnectionStartFrame;
 use Bunny\Protocol\MethodConnectionTuneFrame;
@@ -86,7 +87,11 @@ class Client extends AbstractClient
     public function __destruct()
     {
         if ($this->isConnected()) {
-            $this->disconnect();
+            try {
+                $this->disconnect();
+            } catch (\Exception $e) {
+                
+            }
         }
     }
 
