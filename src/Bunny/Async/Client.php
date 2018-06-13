@@ -85,8 +85,10 @@ class Client extends AbstractClient
      */
     public function __destruct()
     {
-        if ($this->isConnected()) {
+        try {
             $this->disconnect();
+        } catch (\Exception $e) {
+
         }
     }
 
